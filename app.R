@@ -17,12 +17,12 @@ options(
 
 # ---- Dados dos estímulos ----
 orientacao <- c("Semanal", "Mensal", "Sob demanda")
-formato <- c("Presencial", "Híbrido")
+# formato <- c("Presencial", "Híbrido")
 producao <- c("Até 2 artigos", "De 3 a 5 artigos", "Mais de 5 artigos")
 
 stimuli <- expand.grid(
   Orientacao = orientacao,
-  Formato = formato,
+  # Formato = formato,
   Producao = producao,
   stringsAsFactors = FALSE
 ) %>%
@@ -32,49 +32,88 @@ numero_ordinal <- function(n) {
   paste0(n, "º")
 }
 
+cores_orientacao <- c(
+  "Semanal" = "#FFCDD2",
+  "Mensal" = "#F8BBD0",
+  "Sob demanda" = "#E1BEE7"
+)
+
+cores_formato <- c(
+  "Presencial" = "#BBDEFB",
+  "Híbrido" = "#B2EBF2"
+)
+
+cores_producao <- c(
+  "Até 2 artigos" = "#C8E6C9",
+  "De 3 a 5 artigos" = "#DCEDC8",
+  "Mais de 5 artigos" = "#FFF9C4"
+)
+
 criar_label <- function(i) {
+  cor_orient <- cores_orientacao[stimuli$Orientacao[i]]
+  # cor_formato <- cores_formato[stimuli$Formato[i]]
+  cor_producao <- cores_producao[stimuli$Producao[i]]
+
   tags$div(
-    style = "padding: 16px; border-radius: 10px; margin: 8px 0; transition: all 0.3s;",
+    style = "padding: 16px; border-radius: 12px; margin: 10px 0; border: 2px solid #ddd;",
+
+    # Título + número
     tags$div(
       style = "display: flex; align-items: center; gap: 12px;",
       tags$div(
-        style = "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        style = "background: #764ba2; 
                  color: white; border-radius: 50%; width: 32px; height: 32px; 
                  display: flex; align-items: center; justify-content: center; 
-                 font-weight: bold; font-size: 14px; flex-shrink: 0;",
+                 font-weight: bold; font-size: 14px;",
         i
       ),
+
       tags$div(
         style = "flex: 1;",
         tags$div(
-          style = "font-weight: 600; font-size: 15px; color: #2c3e50; margin-bottom: 6px;",
+          style = "font-weight: 600; font-size: 15px; color: #2c3e50;",
           paste0("Opção ", i)
-        ),
-        tags$div(
-          style = "font-size: 13px; color: #546e7a; line-height: 1.5;",
-          tags$span(
-            style = "display: inline-block; margin-right: 8px;",
-            icon("calendar"),
-            " ",
-            stimuli$Orientacao[i]
-          ),
-          tags$span(
-            style = "display: inline-block; margin-right: 8px;",
-            icon("laptop"),
-            " ",
-            stimuli$Formato[i]
-          ),
-          tags$span(
-            style = "display: inline-block;",
-            icon("file-alt"),
-            " ",
-            stimuli$Producao[i]
-          )
         )
+      )
+    ),
+
+    # Blocos coloridos
+    tags$div(
+      style = "margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;",
+
+      tags$span(
+        style = sprintf(
+          "background:%s; padding:6px 10px; border-radius:8px; font-size:13px; font-weight:600;",
+          cor_orient
+        ),
+        icon("calendar"),
+        " ",
+        stimuli$Orientacao[i]
+      ),
+
+      # tags$span(
+      #   style = sprintf(
+      #     "background:%s; padding:6px 10px; border-radius:8px; font-size:13px; font-weight:600;",
+      #     cor_formato
+      #   ),
+      #   icon("laptop"),
+      #   " ",
+      #   stimuli$Formato[i]
+      # ),
+
+      tags$span(
+        style = sprintf(
+          "background:%s; padding:6px 10px; border-radius:8px; font-size:13px; font-weight:600;",
+          cor_producao
+        ),
+        icon("file-alt"),
+        " ",
+        stimuli$Producao[i]
       )
     )
   )
 }
+
 
 labels_cards <- lapply(1:nrow(stimuli), criar_label)
 
@@ -506,7 +545,7 @@ ui <- fluidPage(
             strong("Frequência da orientação:"),
             " semanal, mensal ou sob demanda."
           ),
-          tags$li(strong("Formato das reuniões:"), " presencial ou híbrido."),
+          # tags$li(strong("Formato das reuniões:"), " presencial ou híbrido."),
           tags$li(
             strong("Produção científica esperada:"),
             " até 2 artigos, de 3 a 5 artigos ou mais de 5 artigos."
