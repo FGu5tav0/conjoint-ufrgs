@@ -447,7 +447,7 @@ ui <- fluidPage(
             textInput(
               "area_pesquisa",
               NULL,
-              placeholder = "Ex: Ciências Sociais",
+              placeholder = "Ex: Física do Solo",
               width = "100%"
             )
           )
@@ -547,7 +547,7 @@ ui <- fluidPage(
           ),
           # tags$li(strong("Formato das reuniões:"), " presencial ou híbrido."),
           tags$li(
-            strong("Produção científica esperada:"),
+            strong("Produção científica esperada ao fim do curso:"),
             " até 2 artigos, de 3 a 5 artigos ou mais de 5 artigos."
           )
         ),
